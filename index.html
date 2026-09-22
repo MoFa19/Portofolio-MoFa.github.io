@@ -55,6 +55,23 @@
             pointer-events: none;
         }
 
+        /* Editable Text Styles (Untuk Profil, Headline & Sidebar) */
+        .editable-hover:hover {
+            outline: 2px dashed #3b82f6;
+            outline-offset: 4px;
+            border-radius: 4px;
+            cursor: text;
+            background: rgba(59, 130, 246, 0.05);
+        }
+        [contenteditable="true"]:focus {
+            outline: none;
+            cursor: text;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 4px 8px;
+            border-radius: 8px;
+            box-shadow: 0 0 0 2px #3b82f6 inset;
+        }
+
         /* FIX UNTUK EDITOR CATATAN */
         #note-content[contenteditable="true"]:empty:before {
             content: attr(placeholder);
@@ -115,8 +132,16 @@
                     <i class="fas fa-camera text-white text-xl drop-shadow-md"></i>
                 </div>
             </div>
-            <h2 class="text-lg font-bold text-center leading-tight">Creative Thinker</h2>
-            <p class="text-xs text-slate-400 text-center mt-1">AI-Powered Efficiency</p>
+            
+            <!-- Area Identitas Sidebar Editable -->
+            <div class="relative group w-full flex flex-col items-center mt-2">
+                <h2 id="sidebar-title" class="text-lg font-bold text-center leading-tight transition-all w-full" spellcheck="false">Creative Thinker</h2>
+                <p id="sidebar-subtitle" class="text-xs text-slate-400 text-center mt-1 transition-all w-full" spellcheck="false">AI-Powered Efficiency</p>
+                
+                <button id="btn-save-identity" onclick="saveIdentityText()" class="admin-control hidden mt-3 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-xs font-semibold shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2">
+                    <i class="fas fa-save"></i> Simpan Skill
+                </button>
+            </div>
         </div>
 
         <ul class="flex flex-col w-full p-4 gap-2 mt-2 flex-1">
@@ -168,16 +193,34 @@
             <!-- HOME SECTION -->
             <section id="home-section" class="section-content active">
                 <div class="flex flex-col lg:flex-row gap-8 items-center lg:items-start mt-4 md:mt-10">
-                    <div class="flex-1 space-y-6">
+                    <div class="flex-1 space-y-6 w-full">
                         <div class="inline-block px-4 py-1.5 rounded-full glass-panel text-sm text-teal-300 border border-teal-500/30 shadow-[0_0_15px_rgba(20,184,166,0.15)]">
                             <i class="fas fa-robot mr-2"></i> Human Intelligence × Artificial Intelligence
                         </div>
-                        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight">
-                            Memecahkan Masalah dengan <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-teal-300 to-indigo-400">Pola Pikir Kritis</span> &amp; AI.
-                        </h1>
-                        <p class="text-slate-300 text-lg leading-relaxed max-w-2xl">
-                            Saya adalah Moch. Fakhri a.k.a MoFa Hitori a.k.a Betrayal, individu yang terbiasa memanfaatkan teknologi AI dalam kehidupan sehari-hari. Berbekal kemampuan <strong>berpikir kritis (Critical Thinking)</strong>, saya tidak hanya menerima output mentah, melainkan menganalisis, menstrukturisasi, dan mengeksekusi solusi untuk efisiensi pekerjaan yang optimal.
-                        </p>
+                        
+                        <!-- Area Headline Editable -->
+                        <div class="relative group">
+                            <h1 id="home-headline" class="text-4xl md:text-6xl font-extrabold leading-tight transition-all" spellcheck="false">
+                                Memecahkan Masalah dengan <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-teal-300 to-indigo-400">Pola Pikir Kritis</span> &amp; AI.
+                            </h1>
+                            <button id="btn-save-headline" onclick="saveHeadlineText()" class="admin-control hidden mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-semibold shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2">
+                                <i class="fas fa-save"></i> Simpan Headline
+                            </button>
+                        </div>
+                        
+                        <!-- Area Profil (Tentang) Editable -->
+                        <div class="relative group">
+                            <p id="about-text" class="text-slate-300 text-lg leading-relaxed max-w-2xl transition-all" spellcheck="false">
+                                Memuat profil...
+                            </p>
+                            <!-- Hint & Button muncul saat login Admin -->
+                            <div id="about-edit-hint" class="admin-control hidden text-xs text-blue-400 mt-2 italic">
+                                <i class="fas fa-info-circle"></i> Klik teks headline atau profil di atas untuk mengubahnya.
+                            </div>
+                            <button id="btn-save-about" onclick="saveAboutText()" class="hidden mt-3 px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg text-sm font-semibold shadow-lg shadow-blue-500/30 transition-all flex items-center gap-2">
+                                <i class="fas fa-save"></i> Simpan Perubahan Profil
+                            </button>
+                        </div>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
                             <div class="glass-panel p-5 rounded-2xl border border-slate-700 hover:border-blue-500/50 transition-colors">
@@ -254,7 +297,7 @@
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
                     <div>
                         <h2 class="text-3xl font-bold mb-2">Pembelajaran &amp; Resource</h2>
-                        <p class="text-slate-400">Bagikan Prompts (Reguler/Premium), Hasil, Kuis, dan Aplikasi pendukung pembelajaran.</p>
+                        <p class="text-slate-400">Bagikan Prompts (Reguler/Premium), Hasil, Dokumen Kuis, dan Aplikasi.</p>
                     </div>
                     <button onclick="openModal('learn-modal')" class="admin-control hidden bg-orange-600 hover:bg-orange-500 text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all flex items-center gap-2 whitespace-nowrap">
                         <i class="fas fa-plus"></i> Tambah Materi
@@ -265,9 +308,10 @@
                     <button onclick="filterLearn('all')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-700 text-white font-medium text-sm whitespace-nowrap border border-slate-500">Semua</button>
                     <button onclick="filterLearn('Prompt')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">Prompt AI</button>
                     <button onclick="filterLearn('Hasil')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">Hasil</button>
-                    <button onclick="filterLearn('Kuis')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">Kuis / Soal</button>
+                    <button onclick="filterLearn('Kuis')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">Kuis / Soal URL</button>
+                    <button onclick="filterLearn('Dokumen')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">Dokumen</button>
                     <button onclick="filterLearn('App Mobile')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">App Mobile</button>
-                    <button onclick="filterLearn('App PC')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">App PC/Laptop</button>
+                    <button onclick="filterLearn('App PC')" class="learn-filter-btn px-4 py-2 rounded-full bg-slate-800/50 text-slate-400 hover:bg-slate-700 hover:text-white font-medium text-sm whitespace-nowrap border border-transparent transition-all">App PC</button>
                 </div>
 
                 <div id="learning-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
@@ -455,8 +499,8 @@
                     <input type="text" id="fav-title" required="" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-500">
                 </div>
                 <div class="mb-6">
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Link URL (Opsional)</label>
-                    <input type="url" id="fav-url" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-500">
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Link URL (Wajib)</label>
+                    <input type="url" id="fav-url" required="" class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-teal-500">
                 </div>
                 <div class="flex justify-end gap-3">
                     <button type="button" onclick="closeModal('fav-modal')" class="px-5 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white">Batal</button>
@@ -480,7 +524,8 @@
                         <option value="Prompt">Prompt AI (Free)</option>
                         <option value="Prompt Premium">Prompt AI (Premium)</option>
                         <option value="Hasil">Hasil (Video/Gambar URL)</option>
-                        <option value="Kuis">Kuis / Soal (URL)</option>
+                        <option value="Kuis">Kuis / Soal (URL GForm/Quizizz)</option>
+                        <option value="Dokumen">Dokumen (Upload PDF/Word)</option>
                         <option value="App Mobile">Aplikasi Mobile</option>
                         <option value="App PC">Aplikasi PC/Laptop</option>
                     </select>
@@ -545,6 +590,15 @@
         let currentLearnFilter = 'all';
         let currentEditingNoteId = null;
         let isListenersAttached = false;
+        
+        let initialHeadlineText = `Memecahkan Masalah dengan <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-teal-300 to-indigo-400">Pola Pikir Kritis</span> &amp; AI.`;
+        let initialAboutText = "Saya adalah Moch. Fakhri a.k.a MoFa Hitori a.k.a Betrayal, individu yang terbiasa memanfaatkan teknologi AI dalam kehidupan sehari-hari. Berbekal kemampuan <strong>berpikir kritis (Critical Thinking)</strong>, saya tidak hanya menerima output mentah, melainkan menganalisis, menstrukturisasi, dan mengeksekusi solusi untuk efisiensi pekerjaan yang optimal.";
+        let initialIdentityTitle = "Creative Thinker";
+        let initialIdentitySubtitle = "AI-Powered Efficiency";
+
+        // Variabel penampung untuk file Dokumen (PDF/Word/Excel)
+        window.currentKuisFile = null;
+        window.currentKuisFileName = '';
 
         // LOGIKA AUTENTIKASI OTOMATIS
         onAuthStateChanged(auth, (user) => {
@@ -580,9 +634,118 @@
             const noteEditor = document.getElementById('note-content');
             if(noteEditor) noteEditor.setAttribute('contenteditable', isAdmin ? "true" : "false");
             
+            // Setup Editable Text (Headline, Profil, & Sidebar)
+            const headlineEl = document.getElementById('home-headline');
+            const saveHeadlineBtn = document.getElementById('btn-save-headline');
+            
+            const aboutEl = document.getElementById('about-text');
+            const saveAboutBtn = document.getElementById('btn-save-about');
+            const hintAbout = document.getElementById('about-edit-hint');
+            
+            const sidebarTitleEl = document.getElementById('sidebar-title');
+            const sidebarSubtitleEl = document.getElementById('sidebar-subtitle');
+            const saveIdentityBtn = document.getElementById('btn-save-identity');
+            
+            if(isAdmin) {
+                // Headline
+                headlineEl.setAttribute('contenteditable', 'true');
+                headlineEl.classList.add('editable-hover');
+                headlineEl.addEventListener('input', () => saveHeadlineBtn.classList.remove('hidden'));
+                
+                // About
+                aboutEl.setAttribute('contenteditable', 'true');
+                aboutEl.classList.add('editable-hover');
+                hintAbout.classList.remove('hidden');
+                aboutEl.addEventListener('input', () => saveAboutBtn.classList.remove('hidden'));
+                
+                // Sidebar
+                sidebarTitleEl.setAttribute('contenteditable', 'true');
+                sidebarTitleEl.classList.add('editable-hover');
+                sidebarSubtitleEl.setAttribute('contenteditable', 'true');
+                sidebarSubtitleEl.classList.add('editable-hover');
+                const showIdentitySave = () => saveIdentityBtn.classList.remove('hidden');
+                sidebarTitleEl.addEventListener('input', showIdentitySave);
+                sidebarSubtitleEl.addEventListener('input', showIdentitySave);
+                
+            } else {
+                headlineEl.setAttribute('contenteditable', 'false');
+                headlineEl.classList.remove('editable-hover');
+                saveHeadlineBtn.classList.add('hidden');
+                
+                aboutEl.setAttribute('contenteditable', 'false');
+                aboutEl.classList.remove('editable-hover');
+                saveAboutBtn.classList.add('hidden');
+                hintAbout.classList.add('hidden');
+                
+                sidebarTitleEl.setAttribute('contenteditable', 'false');
+                sidebarTitleEl.classList.remove('editable-hover');
+                sidebarSubtitleEl.setAttribute('contenteditable', 'false');
+                sidebarSubtitleEl.classList.remove('editable-hover');
+                saveIdentityBtn.classList.add('hidden');
+            }
+            
             // Re-render konten pembelajaran untuk menyesuaikan tampilan Premium Prompt
             if (isListenersAttached) renderLearning();
         }
+        
+        // FUNGSI SIMPAN TEKS HEADLINE
+        window.saveHeadlineText = async function() {
+            const headlineEl = document.getElementById('home-headline');
+            const saveBtn = document.getElementById('btn-save-headline');
+            const newText = headlineEl.innerHTML; 
+            
+            if(!newText.trim()) return showToast("Headline tidak boleh kosong!", "error");
+            
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+            try {
+                await setDoc(doc(db, 'settings', 'headline'), { content: newText, updatedAt: Date.now() }, { merge: true });
+                showToast("Headline berhasil diperbarui!", "success");
+                saveBtn.classList.add('hidden');
+            } catch (error) {
+                showToast("Gagal menyimpan headline.", "error");
+            }
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Headline';
+        };
+
+        // FUNGSI SIMPAN TEKS PROFIL (ABOUT ME)
+        window.saveAboutText = async function() {
+            const aboutEl = document.getElementById('about-text');
+            const saveBtn = document.getElementById('btn-save-about');
+            const newText = aboutEl.innerHTML; 
+            
+            if(!newText.trim()) return showToast("Profil tidak boleh kosong!", "error");
+            
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+            try {
+                await setDoc(doc(db, 'settings', 'about'), { content: newText, updatedAt: Date.now() }, { merge: true });
+                showToast("Profil berhasil diperbarui!", "success");
+                saveBtn.classList.add('hidden');
+            } catch (error) {
+                showToast("Gagal menyimpan profil.", "error");
+            }
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Perubahan Profil';
+        };
+        
+        // FUNGSI SIMPAN TEKS IDENTITAS SIDEBAR
+        window.saveIdentityText = async function() {
+            const titleEl = document.getElementById('sidebar-title');
+            const subtitleEl = document.getElementById('sidebar-subtitle');
+            const saveBtn = document.getElementById('btn-save-identity');
+            const newTitle = titleEl.innerHTML; 
+            const newSubtitle = subtitleEl.innerHTML;
+            
+            if(!newTitle.trim()) return showToast("Identitas tidak boleh kosong!", "error");
+            
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            try {
+                await setDoc(doc(db, 'settings', 'identity'), { title: newTitle, subtitle: newSubtitle, updatedAt: Date.now() }, { merge: true });
+                showToast("Skill berhasil diperbarui!", "success");
+                saveBtn.classList.add('hidden');
+            } catch (error) {
+                showToast("Gagal menyimpan skill.", "error");
+            }
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Simpan Skill';
+        };
 
         // ==========================================
         // UI UTILITIES & LOGIKA FOTO PROFIL
@@ -624,7 +787,11 @@
             document.getElementById(`${modalId}-content`).classList.add('scale-95');
             const form = document.querySelector(`#${modalId} form`);
             if(form) form.reset();
-            if(modalId === 'learn-modal') toggleLearnFields();
+            if(modalId === 'learn-modal') {
+                window.currentKuisFile = null;
+                window.currentKuisFileName = '';
+                toggleLearnFields();
+            }
         };
 
         window.showToast = function(message, type = 'info') {
@@ -735,6 +902,7 @@
         };
 
         function setupRealtimeListeners() {
+            // Listeners Teks & Profil
             onSnapshot(doc(db, 'settings', 'profile'), (snap) => {
                 if (snap.exists() && snap.data().photoBase64) {
                     const base64 = snap.data().photoBase64;
@@ -743,7 +911,38 @@
                     document.getElementById('enlarged-profile-img').src = base64;
                 }
             });
+            
+            onSnapshot(doc(db, 'settings', 'headline'), (snap) => {
+                const el = document.getElementById('home-headline');
+                if (document.activeElement !== el) {
+                    if (snap.exists() && snap.data().content) el.innerHTML = snap.data().content;
+                    else el.innerHTML = initialHeadlineText;
+                }
+            });
+            
+            onSnapshot(doc(db, 'settings', 'about'), (snap) => {
+                const el = document.getElementById('about-text');
+                if (document.activeElement !== el) {
+                    if (snap.exists() && snap.data().content) el.innerHTML = snap.data().content;
+                    else el.innerHTML = initialAboutText;
+                }
+            });
+            
+            onSnapshot(doc(db, 'settings', 'identity'), (snap) => {
+                const tEl = document.getElementById('sidebar-title');
+                const sEl = document.getElementById('sidebar-subtitle');
+                if (document.activeElement !== tEl && document.activeElement !== sEl) {
+                    if (snap.exists()) {
+                        if(snap.data().title) tEl.innerHTML = snap.data().title;
+                        if(snap.data().subtitle) sEl.innerHTML = snap.data().subtitle;
+                    } else {
+                        tEl.innerHTML = initialIdentityTitle;
+                        sEl.innerHTML = initialIdentitySubtitle;
+                    }
+                }
+            });
 
+            // Listeners Data Lainnya
             onSnapshot(collection(db, 'links'), (snap) => {
                 linksData = []; snap.forEach(d => linksData.push({ id: d.id, ...d.data() })); linksData.sort((a, b) => b.createdAt - a.createdAt); renderLinks();
             });
@@ -768,6 +967,9 @@
                 else if (link.url.includes('github.com')) icon = 'fab fa-github text-white';
                 else if (link.url.includes('linkedin.com')) icon = 'fab fa-linkedin text-blue-500';
                 else if (link.url.includes('youtube.com')) icon = 'fab fa-youtube text-red-500';
+                else if (link.url.toLowerCase().includes('dana.id')) icon = 'fas fa-wallet text-blue-400';
+                else if (link.url.toLowerCase().includes('seabank')) icon = 'fas fa-university text-orange-400';
+                else if (link.url.toLowerCase().includes('bri.co.id') || link.url.toLowerCase().includes('brimo')) icon = 'fas fa-money-check-alt text-blue-600';
                 
                 const delBtn = `<button onclick="deleteLink('${link.id}')" class="admin-control ${isAdmin ? '' : 'hidden'} absolute top-4 right-4 text-slate-500 hover:text-red-500 opacity-0 group-hover:opacity-100 bg-slate-900 w-8 h-8 rounded-full border border-slate-700"><i class="fas fa-trash text-sm"></i></button>`;
                 
@@ -856,11 +1058,39 @@
 
         // --- MANAJEMEN PEMBELAJARAN ---
         
+        // Logika Ekstra untuk membaca file upload materi Dokumen (Kuis/Bahan)
+        window.handleKuisFile = function(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            // Batas maksimal file Dokumen 750KB agar masuk Firestore
+            if(file.size > 750 * 1024) { 
+                showToast("Batas database uji coba, ukuran file maksimal 750 KB!", "error");
+                event.target.value = ''; 
+                return;
+            }
+            
+            document.getElementById('kuis-file-name').textContent = "Memproses...";
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                window.currentKuisFile = e.target.result; // Hasil Base64
+                window.currentKuisFileName = file.name;
+                document.getElementById('kuis-file-name').textContent = file.name;
+                // Kosongkan input url link agar tidak bentrok
+                const urlInput = document.getElementById('learn-content');
+                if(urlInput) urlInput.value = '';
+            };
+            reader.readAsDataURL(file);
+        };
+
         window.toggleLearnFields = function() {
             const type = document.getElementById('learn-type').value;
             const container = document.getElementById('learn-dynamic-field');
             const premiumUrlField = document.getElementById('learn-premium-url-field');
             const premiumUrlInput = document.getElementById('learn-premium-url');
+            
+            // Reset state file upload
+            window.currentKuisFile = null;
+            window.currentKuisFileName = '';
             
             // Sembunyikan field premium url secara default
             premiumUrlField.classList.add('hidden');
@@ -885,8 +1115,19 @@
                 `;
             } else if (type === 'Kuis') {
                 container.innerHTML = `
-                    <label class="block text-sm font-medium text-slate-300 mb-1">Tautan Kuis (GForm/Quizizz/Word URL)</label>
-                    <input type="url" id="learn-content" required placeholder="https://..." class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500">
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Tautan Kuis (Google Form / Quizizz URL)</label>
+                    <input type="url" id="learn-content" required placeholder="https://..." class="w-full bg-slate-900 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 mb-3">
+                `;
+            } else if (type === 'Dokumen') {
+                container.innerHTML = `
+                    <label class="block text-sm font-medium text-slate-300 mb-1">Upload Dokumen (PDF, Word, Excel)</label>
+                    <div class="flex flex-col gap-3 p-4 bg-slate-800 rounded-xl border border-slate-700">
+                        <input type="file" id="kuis-file-upload" accept=".pdf,.doc,.docx,.xls,.xlsx" class="hidden" onchange="handleKuisFile(event)">
+                        <button type="button" onclick="document.getElementById('kuis-file-upload').click()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2 w-full shadow-lg shadow-blue-600/20">
+                            <i class="fas fa-file-upload"></i> Pilih File dari Perangkat
+                        </button>
+                        <span id="kuis-file-name" class="text-xs text-slate-400 text-center break-all">Maksimal ukuran file: 750 KB</span>
+                    </div>
                 `;
             } else {
                 container.innerHTML = `
@@ -990,23 +1231,38 @@
                         contentHtml = item.content ? `<div class="mt-4"><a href="${item.content}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-500 border border-red-500 rounded-xl text-white text-sm font-semibold transition-colors shadow-lg shadow-red-600/30 break-all"><i class="fas fa-external-link-alt"></i> Lihat Hasil</a></div>` : '';
                     }
                     
+                } else if (item.type === 'Dokumen') {
+                    typeBadge = `<span class="px-2 py-1 bg-blue-900/30 text-blue-400 border border-blue-500/30 rounded-lg text-xs"><i class="fas fa-file-alt"></i> Dokumen</span>`;
+                    let btnIcon = 'fas fa-download';
+                    let fName = item.fileName || 'Dokumen';
+                    let shortName = fName.length > 20 ? fName.substring(0, 17) + '...' : fName;
+                    
+                    contentHtml = item.content ? `<div class="mt-4"><a href="${item.content}" download="${fName}" class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-500 border border-blue-500 rounded-xl text-white text-sm font-semibold transition-colors shadow-lg shadow-blue-600/30 break-all"><i class="${btnIcon}"></i> Download ${shortName}</a></div>` : '';
+
                 } else if (item.type === 'Kuis') {
                     typeBadge = `<span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 border border-yellow-500/30 rounded-lg text-xs"><i class="fas fa-tasks"></i> Kuis / Soal</span>`;
                     let btnIcon = 'fas fa-external-link-alt';
                     let btnText = 'Kerjakan Kuis';
                     let href = item.content;
+                    let downloadAttr = '';
 
-                    let urlStr = (item.content || '').toLowerCase();
-                    if (urlStr.includes('docs.google.com/forms') || urlStr.includes('forms.gle')) {
-                        btnIcon = 'fab fa-google';
-                    } else if (urlStr.includes('quizizz.com')) {
-                        btnIcon = 'fas fa-gamepad';
-                    } else if (urlStr.includes('.doc') || urlStr.includes('.docx') || urlStr.includes('.pdf')) {
-                        btnIcon = 'fas fa-file-alt';
-                        btnText = 'Download Soal';
+                    // Fallback cek lama kalau-kalau ada data kuis lama berwujud file
+                    if (item.isUpload || (item.content && item.content.startsWith('data:'))) {
+                        btnIcon = 'fas fa-download';
+                        let fName = item.fileName || 'Soal_Kuis';
+                        let shortName = fName.length > 20 ? fName.substring(0, 17) + '...' : fName;
+                        btnText = `Download ${shortName}`;
+                        downloadAttr = `download="${fName}"`;
+                    } else {
+                        let urlStr = (item.content || '').toLowerCase();
+                        if (urlStr.includes('docs.google.com/forms') || urlStr.includes('forms.gle')) {
+                            btnIcon = 'fab fa-google';
+                        } else if (urlStr.includes('quizizz.com')) {
+                            btnIcon = 'fas fa-gamepad';
+                        }
                     }
                     
-                    contentHtml = item.content ? `<div class="mt-4"><a href="${href}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 border border-yellow-500 rounded-xl text-white text-sm font-semibold transition-colors shadow-lg shadow-yellow-600/30 break-all"><i class="${btnIcon}"></i> ${btnText}</a></div>` : '';
+                    contentHtml = item.content ? `<div class="mt-4"><a href="${href}" ${downloadAttr} target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-yellow-600 hover:bg-yellow-500 border border-yellow-500 rounded-xl text-white text-sm font-semibold transition-colors shadow-lg shadow-yellow-600/30 break-all"><i class="${btnIcon}"></i> ${btnText}</a></div>` : '';
                 } else {
                     const isMobile = item.type === 'App Mobile';
                     typeBadge = `<span class="px-2 py-1 bg-slate-800 text-slate-300 border border-slate-600 rounded-lg text-xs"><i class="${isMobile ? 'fas fa-mobile-alt text-green-400' : 'fas fa-laptop text-blue-400'}"></i> ${item.type}</span>`;
@@ -1041,8 +1297,8 @@
             let isUpload = false;
             let fileName = '';
 
-            // Jika tipe Kuis dan file sudah dipilih, timpa isinya dengan file
-            if (type === 'Kuis' && window.currentKuisFile) {
+            // Jika tipe Dokumen dan file sudah dipilih, timpa isinya dengan file
+            if (type === 'Dokumen' && window.currentKuisFile) {
                 content = window.currentKuisFile;
                 isUpload = true;
                 fileName = window.currentKuisFileName;
@@ -1052,17 +1308,27 @@
                 showToast("Materi tidak boleh kosong (Isi link atau upload file).", "error");
                 return;
             }
+            
+            // Siapkan data untuk disave
+            let dataToSave = {
+                type, 
+                title, 
+                content, 
+                isUpload, 
+                fileName, 
+                createdAt: Date.now() 
+            };
+            
+            // Jika tipe premium, tambahkan URL premiumnya
+            if (type === 'Prompt Premium') {
+                const premiumUrl = document.getElementById('learn-premium-url').value;
+                if(!premiumUrl) return showToast("Link pembelian wajib diisi untuk Premium Prompt!", "error");
+                dataToSave.premiumUrl = premiumUrl;
+            }
 
             btn.innerHTML = 'Menyimpan...';
             try {
-                await addDoc(collection(db, 'learning'), { 
-                    type, 
-                    title, 
-                    content, 
-                    isUpload, 
-                    fileName, 
-                    createdAt: Date.now() 
-                });
+                await addDoc(collection(db, 'learning'), dataToSave);
                 showToast("Materi tersimpan!", "success"); 
                 closeModal('learn-modal');
             } catch (err) { 
